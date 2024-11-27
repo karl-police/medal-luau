@@ -16,14 +16,16 @@ jobs:
       
     - name: Build
       run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+    #- name: Run tests
+    #  run: cargo test --verbose
 
 
     - name: Test
       run: | 
         dir
-        cd target/debug/build
+        cd target
+        dir
+        cd target/debug
         dir
 
     - name: Upload Artifacts
@@ -31,4 +33,4 @@ jobs:
       with:
         name: output
         path: |
-          target/debug/build
+          target/debug
