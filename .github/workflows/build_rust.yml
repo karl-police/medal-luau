@@ -23,5 +23,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: output
+        run: dir
         path: |
-          *
+          target
