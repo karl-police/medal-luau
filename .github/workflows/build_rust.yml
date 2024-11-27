@@ -9,6 +9,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Prepare
+      run: |
+        cargo clean
+      
     - name: Build
       run: cargo build --verbose
     - name: Run tests
