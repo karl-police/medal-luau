@@ -4,8 +4,7 @@ on: workflow_dispatch
 
 
 jobs:
-  build:
-    #runs-on: ubuntu-latest
+  windows:
     runs-on: windows-latest
 
     steps:
