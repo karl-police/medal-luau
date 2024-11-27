@@ -23,7 +23,7 @@ jobs:
     - name: Test
       run: | 
         dir
-        cd target/debug
+        cd target/debug/build
         dir
 
     - name: Upload Artifacts
@@ -31,4 +31,4 @@ jobs:
       with:
         name: output
         path: |
-          target/debug/out
+          target/debug/build
