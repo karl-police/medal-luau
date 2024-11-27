@@ -12,7 +12,7 @@ jobs:
     - name: Prepare
       run: |
         rustup install nightly
-        cargo +nightly install racer
+        rustup default nightly
       
     - name: Build
       run: cargo build --verbose
