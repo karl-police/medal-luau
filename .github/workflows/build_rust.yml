@@ -19,10 +19,16 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
+
+    - name: Test
+      run: | 
+        dir
+        cd target
+        dir
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: output
-        run: dir
         path: |
-          target
+          target/output
