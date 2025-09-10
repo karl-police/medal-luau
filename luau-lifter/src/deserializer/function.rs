@@ -118,41 +118,61 @@ impl Function {
         let (input, num_upvalues) = le_u8(input)?;
         let (input, is_vararg) = le_u8(input)?;
 
-        if (is_vararg == 1 ) {
-            //println!("is_vararg: {}", is_vararg);
+        /*if (is_vararg == 1) {
+            println!("found");
         }
-        println!("is_vararg: {}", is_vararg);
+        println!("is_vararg: {}", is_vararg);*/
 
-        let (input, flags) = le_u8(input)?;
+        let (mut input, flags) = le_u8(input)?;
 
         if (types_version == 1) {
-            let (input, _) = parse_list(input, le_u8)?;
-        } else if (types_version == 3) {
-            let (input, typeSize) = leb128_usize(input)?;
-            let (input, upvalCount) = leb128_usize(input)?;
-            let (input, localCount) = leb128_usize(input)?;
+            let (new_input, _) = parse_list(input, le_u8)?;
+            input = new_input;
+        } else if (types_version == 2 || types_version == 3)
+        {
+            let (new_input, typesize) = leb128_usize(input)?;
+            input = new_input;
 
-            if (typeSize != 0) {
-                for i in 0..typeSize {
-                    let (input, _) = le_u8(input)?;
+            if (typesize > 0) {
+                if (types_version == 3) {
+                    let (new_input, typeSize) = leb128_usize(input)?;
+                    input = new_input;
+                    let (new_input, upvalCount) = leb128_usize(input)?;
+                    input = new_input;
+                    let (new_input, localCount) = leb128_usize(input)?;
+                    input = new_input;
+
+                    if (typeSize != 0) {
+                        for i in 0..typeSize {
+                            let (new_input, _) = le_u8(input)?;
+                            input = new_input;
+                        }
+                    }
+                    if (upvalCount != 0) {
+                        for i in 0..upvalCount {
+                            let (new_input, _) = le_u8(input)?;
+                            input = new_input;
+                        }
+                    }
+                    if (localCount != 0) {
+                        let (new_input, _) = le_u8(input)?;
+                        input = new_input;
+                        let (new_input, _) = le_u8(input)?;
+                        input = new_input;
+                        let (new_input, _) = leb128_usize(input)?;
+                        input = new_input;
+                        let (new_input, _) = leb128_usize(input)?;
+                        input = new_input;
+                    }
                 }
-            }
-            if (upvalCount != 0) {
-                for i in 0..typeSize {
-                    let (input, _) = le_u8(input)?;
-                }
-            }
-            if (localCount != 0) {
-                let (input, _) = le_u8(input)?;
-                let (input, _) = le_u8(input)?;
-                let (input, _) = leb128_usize(input)?;
-                let (input, _) = leb128_usize(input)?;
             }
         }
 
-        let (input, u32_instructions) = parse_list(input, le_u32)?;
+
         //let (input, instructions) = parse_list(input, Function::parse_instrution)?;
+        let (input, u32_instructions) = parse_list(input, le_u32)?;
         let instructions = Self::parse_instructions(&u32_instructions, encode_key);
+
         let (input, constants) = parse_list(input, Constant::parse)?;
         let (input, functions) = parse_list(input, leb128_usize)?;
         let (input, line_defined) = leb128_usize(input)?;
@@ -187,7 +207,7 @@ impl Function {
         let input = match le_u8(input)? {
             (input, 0) => input,
             (input, _) => {
-                //panic!("we have debug info");
+                panic!("we have debug info");
                 let (mut input, num_locvars) = leb128_usize(input)?;
                 for _ in 0..num_locvars {
                     (input, _) = leb128_usize(input)?;
