@@ -44,6 +44,8 @@ impl Function {
                 Instruction::E { op_code, .. } => op_code,
             };
 
+            //println!("op: {:?}", op);
+
             // handle ops with aux values
             match op {
                 OpCode::LOP_GETGLOBAL
@@ -110,14 +112,43 @@ impl Function {
         v
     }
 
-    pub(crate) fn parse(input: &[u8], encode_key: u8) -> IResult<&[u8], Self> {
+    pub(crate) fn parse(input: &[u8], encode_key: u8, types_version: u8) -> IResult<&[u8], Self> {
         let (input, max_stack_size) = le_u8(input)?;
         let (input, num_parameters) = le_u8(input)?;
         let (input, num_upvalues) = le_u8(input)?;
         let (input, is_vararg) = le_u8(input)?;
 
+        if (is_vararg == 1 ) {
+            //println!("is_vararg: {}", is_vararg);
+        }
+        println!("is_vararg: {}", is_vararg);
+
         let (input, flags) = le_u8(input)?;
-        let (input, _) = parse_list(input, le_u8)?;
+
+        if (types_version == 1) {
+            let (input, _) = parse_list(input, le_u8)?;
+        } else if (types_version == 3) {
+            let (input, typeSize) = leb128_usize(input)?;
+            let (input, upvalCount) = leb128_usize(input)?;
+            let (input, localCount) = leb128_usize(input)?;
+
+            if (typeSize != 0) {
+                for i in 0..typeSize {
+                    let (input, _) = le_u8(input)?;
+                }
+            }
+            if (upvalCount != 0) {
+                for i in 0..typeSize {
+                    let (input, _) = le_u8(input)?;
+                }
+            }
+            if (localCount != 0) {
+                let (input, _) = le_u8(input)?;
+                let (input, _) = le_u8(input)?;
+                let (input, _) = leb128_usize(input)?;
+                let (input, _) = leb128_usize(input)?;
+            }
+        }
 
         let (input, u32_instructions) = parse_list(input, le_u32)?;
         //let (input, instructions) = parse_list(input, Function::parse_instrution)?;
@@ -156,7 +187,7 @@ impl Function {
         let input = match le_u8(input)? {
             (input, 0) => input,
             (input, _) => {
-                panic!("we have debug info");
+                //panic!("we have debug info");
                 let (mut input, num_locvars) = leb128_usize(input)?;
                 for _ in 0..num_locvars {
                     (input, _) = leb128_usize(input)?;
