@@ -57,9 +57,9 @@ impl<'a> Inliner<'a> {
                                     operation,
                                 }) if operation.is_comparator()
                                     && left.has_side_effects()
-                                    && let box ast::RValue::Local(ref local) = right
-                                    && local == read =>
-                                {
+                                    && left.has_side_effects()
+                                    && matches!(&**right, ast::RValue::Local(local) if local == read) // Is the fix correct?
+                                => {
                                     *right = std::mem::replace(
                                         left,
                                         Box::new(new_rvalue.take().unwrap()),
