@@ -185,7 +185,7 @@ impl<'a: 'b, 'b> Reduce for Binary {
     }
 
     fn reduce_condition(self) -> RValue {
-        //if (true) { return self.into(); }
+        //if true { return self.into(); }
 
         let (left, right) = if matches!(self.operation, BinaryOperation::And | BinaryOperation::Or)
         {
