@@ -96,6 +96,8 @@ impl SideEffects for Binary {
 
 impl<'a: 'b, 'b> Reduce for Binary {
     fn reduce(self) -> RValue {
+        //if (true) { return self.into(); }
+
         // TODO: true == true, true == false, etc.
         // really anything without side effects should be true if l == r
         match (self.left.reduce(), self.right.reduce(), self.operation) {
@@ -183,6 +185,8 @@ impl<'a: 'b, 'b> Reduce for Binary {
     }
 
     fn reduce_condition(self) -> RValue {
+        //if (true) { return self.into(); }
+
         let (left, right) = if matches!(self.operation, BinaryOperation::And | BinaryOperation::Or)
         {
             (self.left.reduce_condition(), self.right.reduce_condition())

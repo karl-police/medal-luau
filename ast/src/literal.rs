@@ -22,6 +22,8 @@ impl Reduce for Literal {
     }
 
     fn reduce_condition(self) -> crate::RValue {
+        //if (true) { return self.into(); }
+
         Literal::Boolean(match self {
             Literal::Boolean(false) | Literal::Nil => false,
             Literal::Boolean(true)

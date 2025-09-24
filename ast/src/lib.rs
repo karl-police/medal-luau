@@ -126,6 +126,8 @@ impl type_system::Infer for RValue {
 
 impl<'a: 'b, 'b> Reduce for RValue {
     fn reduce(self) -> RValue {
+        //if (true) { return self.into(); }
+
         match self {
             Self::Unary(unary) => unary.reduce(),
             Self::Binary(binary) => binary.reduce(),
@@ -137,6 +139,8 @@ impl<'a: 'b, 'b> Reduce for RValue {
     }
 
     fn reduce_condition(self) -> RValue {
+        //if (true) { return self.into(); }
+
         match self {
             Self::Unary(unary) => unary.reduce_condition(),
             Self::Binary(binary) => binary.reduce_condition(),

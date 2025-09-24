@@ -36,6 +36,8 @@ impl Reduce for Closure {
     }
 
     fn reduce_condition(self) -> crate::RValue {
+        //if (true) { return self.into(); }
+
         Literal::Boolean(true).into()
     }
 }

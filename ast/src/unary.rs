@@ -49,6 +49,8 @@ impl Traverse for Unary {
 
 impl Reduce for Unary {
     fn reduce(self) -> RValue {
+        //if (true) { return self.into(); }
+
         // TODO: unnecessary clone
         let does_reduce = |r: &RValue| &r.clone().reduce_condition() != r;
 
@@ -226,6 +228,8 @@ impl Reduce for Unary {
     }
 
     fn reduce_condition(self) -> RValue {
+        //if (true) { return self.into(); }
+
         // TODO: unnecessary clone
         let does_reduce = |r: &RValue| &r.clone().reduce_condition() != r;
 

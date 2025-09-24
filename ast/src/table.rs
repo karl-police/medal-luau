@@ -13,6 +13,8 @@ impl Reduce for Table {
     }
 
     fn reduce_condition(self) -> RValue {
+        //if (true) { return self.into(); }
+
         if self.has_side_effects() {
             // TODO: remove all members w/o side effects
             self.into()
