@@ -432,6 +432,14 @@ impl GraphStructurer {
                             if_condition = ast::Unary::new(if_condition, ast::UnaryOperation::Not)
                                 .reduce_condition();
                         }
+
+                        /* fix?
+                        let break_condition = if header_else_target != body {
+                            ast::Unary::new(if_condition, ast::UnaryOperation::Not).reduce_condition()
+                        } else {
+                            if_condition
+                        };*/
+
                         body_block.push(
                             ast::If::new(
                                 if_condition,
