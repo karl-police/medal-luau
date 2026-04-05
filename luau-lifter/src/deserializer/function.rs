@@ -44,6 +44,7 @@ impl Function {
                 Instruction::E { op_code, .. } => op_code,
             };
 
+            // Debug
             //println!("op: {:?}", op);
 
             // handle ops with aux values
