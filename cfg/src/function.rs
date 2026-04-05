@@ -177,6 +177,7 @@ impl Function {
     }
 
     pub fn remove_block(&mut self, block: NodeIndex) -> Option<ast::Block> {
+        //println!("Remove Node {:?}", block.index());
         self.graph.remove_node(block)
     }
 }

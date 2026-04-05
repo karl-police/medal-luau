@@ -148,6 +148,10 @@ fn decompile_function(
     mut function: Function,
     upvalues_in: Vec<ast::RcLocal>,
 ) -> (ByAddress<Arc<Mutex<ast::Function>>>, Vec<ast::RcLocal>) {
+    
+    // Debugging
+    //cfg::dot::render_to(&function, &mut std::io::stdout()).unwrap();
+
     let (local_count, local_groups, upvalue_in_groups, upvalue_passed_groups) =
         cfg::ssa::construct(&mut function, &upvalues_in);
     let upvalue_to_group = upvalue_in_groups

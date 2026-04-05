@@ -73,7 +73,7 @@ impl GraphStructurer {
     ) -> bool {
         let successors = self.function.successor_blocks(node).collect_vec();
 
-        // cfg::dot::render_to(&self.function, &mut std::io::stdout()).unwrap();
+        //cfg::dot::render_to(&self.function, &mut std::io::stdout()).unwrap();
         if self.try_collapse_loop(node, dominators, post_dom) {
             self.find_loop_headers();
             // println!("matched loop");
@@ -103,7 +103,7 @@ impl GraphStructurer {
         };
 
         //println!("after");
-        //dot::render_to(&self.function, &mut std::io::stdout()).unwrap();
+        //cfg::dot::render_to(&self.function, &mut std::io::stdout()).unwrap();
 
         changed
     }
