@@ -392,7 +392,11 @@ impl GraphStructurer {
                 Some(next)
             } else {
                 None
+                // Testing
+                //Some(next)
             };
+
+
             for node in breaks
                 .into_iter()
                 .chain(continues)
