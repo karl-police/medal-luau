@@ -305,6 +305,7 @@ impl GraphStructurer {
                         .unwrap_or(false)
                 })
                 .collect_vec();
+            //println!("continues: {:?}", continues);
 
             let mut changed = false;
             let common_post_doms = post_dom
