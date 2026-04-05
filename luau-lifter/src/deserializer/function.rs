@@ -45,7 +45,7 @@ impl Function {
             };
 
             // Debug
-            //println!("op: {:?}", op);
+            //println!("#[{pc}] OpCode: {:?}", op);
 
             // handle ops with aux values
             match op {
@@ -134,6 +134,8 @@ impl Function {
             let (new_input, typesize) = leb128_usize(input)?;
             input = new_input;
 
+            
+
             if (typesize > 0) {
                 if (types_version == 3) {
                     let (new_input, typeSize) = leb128_usize(input)?;
@@ -156,14 +158,16 @@ impl Function {
                         }
                     }
                     if (localCount != 0) {
-                        let (new_input, _) = le_u8(input)?;
-                        input = new_input;
-                        let (new_input, _) = le_u8(input)?;
-                        input = new_input;
-                        let (new_input, _) = leb128_usize(input)?;
-                        input = new_input;
-                        let (new_input, _) = leb128_usize(input)?;
-                        input = new_input;
+                        for i in 0..localCount {
+                            let (new_input, _) = le_u8(input)?;
+                            input = new_input;
+                            let (new_input, _) = le_u8(input)?;
+                            input = new_input;
+                            let (new_input, _) = leb128_usize(input)?;
+                            input = new_input;
+                            let (new_input, _) = leb128_usize(input)?;
+                            input = new_input;
+                        }
                     }
                 }
             }
@@ -176,8 +180,12 @@ impl Function {
 
         let (input, constants) = parse_list(input, Constant::parse)?;
         let (input, functions) = parse_list(input, leb128_usize)?;
+
         let (input, line_defined) = leb128_usize(input)?;
         let (input, function_name) = leb128_usize(input)?;
+
+        //println!("line_defined: {:?}", line_defined);
+
         let (input, has_line_info) = le_u8(input)?;
         let (input, line_gap_log2) = match has_line_info {
             0 => (input, None),
