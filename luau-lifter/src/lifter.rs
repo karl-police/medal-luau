@@ -59,9 +59,6 @@ impl<'a> Lifter<'a> {
         };
 
         context.lift_function();
-        // Debugging
-        //cfg::dot::render_to(&context.function, &mut std::io::stdout()).unwrap();
-
         (context.function, context.upvalues, context.child_functions)
     }
 

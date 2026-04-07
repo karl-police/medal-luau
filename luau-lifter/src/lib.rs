@@ -97,6 +97,8 @@ pub fn decompile_bytecode(bytecode: &[u8], encode_key: u8) -> String {
                         let trace = Backtrace::capture();
                         BACKTRACE.with(move |b| b.borrow_mut().replace(trace));
                     }));
+
+                    // Seems to process function further
                     let result = panic::catch_unwind(move || {
                         let (ast_function, function, upvalues_in) = args.take().unwrap();
                         decompile_function(ast_function, function, upvalues_in)
@@ -150,6 +152,7 @@ fn decompile_function(
 ) -> (ByAddress<Arc<Mutex<ast::Function>>>, Vec<ast::RcLocal>) {
     
     // Debugging
+    // Most likely before function has been processed.
     //cfg::dot::render_to(&function, &mut std::io::stdout()).unwrap();
 
     let (local_count, local_groups, upvalue_in_groups, upvalue_passed_groups) =
