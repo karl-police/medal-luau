@@ -240,6 +240,8 @@ impl GraphStructurer {
         header: NodeIndex,
         next: Option<NodeIndex>,
     ) -> bool {
+        // This seems to trigger if the target jump
+        // jumped to the current header.
         if node == header {
             // TODO: only check back edges?
             if !self

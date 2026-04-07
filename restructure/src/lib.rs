@@ -165,6 +165,9 @@ impl GraphStructurer {
     }
 
     fn insert_goto_for_edge(&mut self, edge: EdgeIndex) {
+        // Debugging
+        //cfg::dot::render_to(&self.function, &mut std::io::stdout()).unwrap();
+
         let (source, target) = self.function.graph().edge_endpoints(edge).unwrap();
         if self.function.graph().edge_weight(edge).unwrap().branch_type == BranchType::Unconditional
             && self.function.predecessor_blocks(target).count() == 1
