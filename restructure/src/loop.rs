@@ -362,6 +362,18 @@ impl GraphStructurer {
                 .filter(|&n| n != header)
                 .filter(|&n| dominators.dominators(n).unwrap().contains(&body))
                 .collect_vec();*/
+            
+            let has_none = self
+                .function
+                .predecessor_blocks(next)
+                .filter(|&n| n != header)
+                .filter(|&n| dominators.dominators(n).is_none())
+                .collect_vec();
+
+            if !has_none.is_empty() {
+                //println!("None found");
+            }
+
             let breaks = self
                 .function
                 .predecessor_blocks(next)
