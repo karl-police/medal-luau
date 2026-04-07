@@ -116,10 +116,10 @@ pub fn decompile_bytecode(bytecode: &[u8], encode_key: u8) -> String {
 
                             let mut message = String::new();
                             writeln!(message, "failed to decompile").unwrap();
-                            // writeln!(message, "function {} panicked at '{}'", function_id, panic_information).unwrap();
-                            // if let Some(backtrace) = BACKTRACE.with(|b| b.borrow_mut().take()) {
-                            //     write!(message, "stack backtrace:\n{}", backtrace).unwrap();
-                            // }
+                            writeln!(message, "function {} panicked at '{}'", function_id, panic_information).unwrap();
+                            if let Some(backtrace) = BACKTRACE.with(|b| b.borrow_mut().take()) {
+                                write!(message, "stack backtrace:\n{}", backtrace).unwrap();
+                            }
 
                             ast_function.lock().body.extend(
                                 message

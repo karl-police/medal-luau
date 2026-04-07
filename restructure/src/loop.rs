@@ -355,11 +355,22 @@ impl GraphStructurer {
                 changed = true;
             }
 
-            let breaks = self
+            // OLD
+            /*let breaks = self
                 .function
                 .predecessor_blocks(next)
                 .filter(|&n| n != header)
                 .filter(|&n| dominators.dominators(n).unwrap().contains(&body))
+                .collect_vec();*/
+            let breaks = self
+                .function
+                .predecessor_blocks(next)
+                .filter(|&n| n != header)
+                .filter(|&n| {
+                    dominators
+                        .dominators(n)
+                        .is_some_and(|mut doms | doms.contains(&body))
+                })
                 .collect_vec();
             //println!("breaks: {:?}", breaks);
 
