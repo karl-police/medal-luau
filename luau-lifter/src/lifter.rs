@@ -6,6 +6,8 @@ use itertools::Itertools;
 use parking_lot::Mutex;
 use petgraph::stable_graph::NodeIndex;
 
+use cfg::dot;
+
 use rustc_hash::FxHashMap;
 use triomphe::Arc;
 
@@ -57,6 +59,9 @@ impl<'a> Lifter<'a> {
         };
 
         context.lift_function();
+        // Debugging
+        //cfg::dot::render_to(&context.function, &mut std::io::stdout()).unwrap();
+
         (context.function, context.upvalues, context.child_functions)
     }
 
