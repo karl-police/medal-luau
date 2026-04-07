@@ -8,6 +8,8 @@ use tuple::Map;
 
 use crate::GraphStructurer;
 use petgraph::{algo::dominators::Dominators, stable_graph::NodeIndex};
+use petgraph::algo::dominators::simple_fast;
+
 
 impl GraphStructurer {
     fn simplify_if(if_stat: &mut ast::If) {
@@ -266,6 +268,7 @@ impl GraphStructurer {
 
     pub(crate) fn refine_virtual_edge_conditional(
         &mut self,
+        dominators: &Dominators<NodeIndex>,
         post_dom: &Dominators<NodeIndex>,
         entry: NodeIndex,
         then_node: NodeIndex,
@@ -273,6 +276,19 @@ impl GraphStructurer {
         header: NodeIndex,
         next: Option<NodeIndex>,
     ) -> bool {
+        // This seems to check where a conditional is jumping to.
+
+        /*let then_main_cont = self
+            .function
+            .predecessor_blocks(header)
+            .filter(|&n| n != entry)
+            .any(|n| {
+                dominators
+                    .dominators(n)
+                    .is_some_and(|mut p| p.contains(&header))
+            });*/
+
+        // OLD
         let then_main_cont = self
             .function
             .predecessor_blocks(header)
@@ -282,7 +298,7 @@ impl GraphStructurer {
                     .dominators(then_node)
                     .is_some_and(|mut p| p.contains(&n))
             });
-
+ 
         let else_main_cont = self
             .function
             .predecessor_blocks(header)

@@ -427,6 +427,7 @@ impl GraphStructurer {
             {
                 if let Some((then_edge, else_edge)) = self.function.conditional_edges(node) {
                     changed |= self.refine_virtual_edge_conditional(
+                        dominators,
                         post_dom,
                         node,
                         then_edge.target(),
